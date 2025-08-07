@@ -10,6 +10,7 @@
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/supersimpledev@8.6.4/chatbot.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
@@ -21,10 +22,21 @@
             }
 
             function sendMessage(){
-                setChatMessages([...chatMessages, {
+
+                const newChatMessages = [...chatMessages, {
                     message: inputText,
                     sender: "user",
+                }]
+
+                setChatMessages(newChatMessages) 
+
+                const response = Chatbot.getResponse(inputText)
+                setChatMessages([...newChatMessages, {
+                    message: response,
+                    sender: "robot",
                 }]) 
+                
+                setInputText('')
             }
 
             return (
@@ -34,6 +46,7 @@
                         placeholder="Send a message to Chatbot"
                         size="30" 
                         onChange={saveInputText}
+                        value={inputText}
                     />
                     <button onClick={sendMessage}>Send</button>                    
                 </>
